@@ -14,7 +14,7 @@ export default function Footer() {
       <div className="container" style={{ textAlign: 'center' }}>
         <p>&copy; 2026 Rajajutan Arkana. Platform Kerajinan Tangan Berkualitas Tinggi.</p>
         <p style={{ marginTop: '6px', fontSize: '0.8rem' }}>
-          Terhubung dengan <a href="http://localhost:8000" style={{ color: '#2563eb', textDecoration: 'underline' }}>Portofolio Pengembang (Bagus Argana)</a>
+          Terhubung dengan <a href="https://bagusargana-portofolio.vercel.app" style={{ color: '#2563eb', textDecoration: 'underline' }}>Portofolio Pengembang (Bagus Argana)</a>
         </p>
       </div>
     </footer>
