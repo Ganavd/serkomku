@@ -9,7 +9,7 @@ export const metadata = {
   icons: {
     icon: '/favicon.ico',
     shortcut: '/favicon.ico',
-    apple: '/Favicon.io',
+    apple: '/Logo-Rajajutan.png',
   },
 };
 
@@ -18,7 +18,7 @@ export default function RootLayout({ children }) {
     <html lang="id">
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="apple-touch-icon" href="/Favicon.io" />
+        <link rel="apple-touch-icon" href="/Logo-Rajajutan.png" />
       </head>
       <body>
         <CartProvider>
