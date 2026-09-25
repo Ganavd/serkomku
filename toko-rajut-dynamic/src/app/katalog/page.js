@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabaseClient';
 import { Search, MapPin } from 'lucide-react';
+import { parseProduct } from '@/lib/productHelper';
 
 export default function KatalogPage() {
   const [products, setProducts] = useState([]);
@@ -22,7 +23,7 @@ export default function KatalogPage() {
         const parsed = JSON.parse(cached);
         if (parsed.prod && parsed.prod.length > 0) {
           setCategories(parsed.cat || []);
-          setProducts(parsed.prod);
+          setProducts(parsed.prod.map(parseProduct));
           setSalesMap(parsed.sales || {});
           setLoading(false);
         }
@@ -42,7 +43,10 @@ export default function KatalogPage() {
       ]);
 
       if (catRes.data) setCategories(catRes.data);
-      if (prodRes.data) setProducts(prodRes.data);
+      if (prodRes.data) {
+        const parsedProds = prodRes.data.map(parseProduct);
+        setProducts(parsedProds);
+      }
 
       const map = {};
       if (salesRes.data) {
@@ -68,6 +72,9 @@ export default function KatalogPage() {
   }
 
   const filteredProducts = products.filter(item => {
+    // Hanya tampilkan produk yang statusnya aktif
+    if (item.is_active === false) return false;
+
     const matchesSearch = item.nama.toLowerCase().includes(search.toLowerCase()) ||
                           (item.deskripsi && item.deskripsi.toLowerCase().includes(search.toLowerCase()));
     
@@ -96,17 +103,6 @@ export default function KatalogPage() {
           gap: '20px'
         }}>
           <div>
-            <span style={{
-              color: '#2563eb',
-              fontSize: '0.8rem',
-              fontWeight: 700,
-              textTransform: 'uppercase',
-              letterSpacing: '0.6px',
-              display: 'block',
-              marginBottom: '4px'
-            }}>
-              Koleksi Resmi Rajajutan Arkana
-            </span>
             <h1 style={{ fontSize: '2rem', fontWeight: 800, color: '#0f172a', letterSpacing: '-0.5px' }}>
               Katalog Produk Kerajinan Rajut
             </h1>

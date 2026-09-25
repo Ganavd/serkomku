@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import AdminSidebar from '@/components/AdminSidebar';
+import AdminTopNav from '@/components/AdminTopNav';
 import { usePathname, useRouter } from 'next/navigation';
 
 export default function AdminLayout({ children }) {
@@ -43,20 +44,32 @@ export default function AdminLayout({ children }) {
   }
 
   return (
-    <div className="admin-layout">
+    <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f8fafc' }}>
+      {/* Sidebar Samping Kiri (Fixed Height 100vh) */}
       <AdminSidebar />
-      <div className="admin-content">
-        <div style={{ flex: 1 }}>
+
+      {/* Main Right Content Area */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+        {/* Header Bar Navigation Atas (Sticky Top 0, Teks Polos 'Admin' di kanan) */}
+        <AdminTopNav />
+
+        {/* Konten Halaman Admin */}
+        <main style={{ flex: 1, padding: '32px 36px 48px' }}>
           {children}
-        </div>
-        <footer style={{ marginTop: '48px', paddingTop: '20px', borderTop: '1px solid #e2e8f0', color: '#64748b', fontSize: '0.85rem', textAlign: 'center' }}>
+        </main>
+
+        {/* Footer Admin */}
+        <footer style={{
+          padding: '20px 36px',
+          borderTop: '1px solid #e2e8f0',
+          backgroundColor: '#ffffff',
+          color: '#64748b',
+          fontSize: '0.85rem',
+          textAlign: 'center'
+        }}>
           <p>© 2026 Rajajutan Arkana. Panel Pengelola Sistem.</p>
-          <p style={{ marginTop: '4px', fontSize: '0.8rem' }}>
-            Terhubung dengan <a href="http://localhost:8000" target="_blank" rel="noreferrer" style={{ color: '#2563eb', textDecoration: 'underline' }}>Portofolio Pengembang (Bagus Argana)</a>
-          </p>
         </footer>
       </div>
     </div>
   );
 }
-

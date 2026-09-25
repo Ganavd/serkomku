@@ -7,6 +7,8 @@ import { useCart } from '@/context/CartContext';
 import { ArrowLeft, ShoppingCart, Zap, ShieldCheck, Truck, MapPin } from 'lucide-react';
 import Link from 'next/link';
 
+import { parseProduct } from '@/lib/productHelper';
+
 export default function ProductDetailPage() {
   const { id } = useParams();
   const router = useRouter();
@@ -39,7 +41,12 @@ export default function ProductDetailPage() {
       ]);
 
       if (prodRes.data) {
-        setProduct(prodRes.data);
+        const parsed = parseProduct(prodRes.data);
+        if (parsed.is_active !== false) {
+          setProduct(parsed);
+        } else {
+          setProduct(null);
+        }
       }
       if (salesRes.data) {
         const total = salesRes.data.reduce((acc, curr) => acc + curr.jumlah, 0);
@@ -98,18 +105,45 @@ export default function ProductDetailPage() {
   return (
     <main style={{ padding: '36px 0 70px', minHeight: '85vh', backgroundColor: '#f8fafc' }}>
       <div className="container">
-        {/* Navigasi Breadcrumb */}
-        <div style={{ marginBottom: '20px' }}>
-          <Link href="/katalog" style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '8px',
-            color: '#64748b',
-            fontSize: '0.92rem',
-            fontWeight: 500,
-            textDecoration: 'none'
-          }}>
-            <ArrowLeft size={16} /> Kembali ke Katalog Produk
+        {/* Header Navigasi Atas dengan Tombol Kembali di Kanan Atas */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '22px', flexWrap: 'wrap', gap: '12px' }}>
+          <div style={{ fontSize: '0.92rem', color: '#64748b' }}>
+            <Link href="/" style={{ color: '#64748b', textDecoration: 'none' }}>Beranda</Link>
+            <span style={{ margin: '0 8px' }}>/</span>
+            <Link href="/katalog" style={{ color: '#64748b', textDecoration: 'none' }}>Katalog</Link>
+            <span style={{ margin: '0 8px' }}>/</span>
+            <span style={{ color: '#0f172a', fontWeight: 600 }}>{product.nama}</span>
+          </div>
+
+          <Link
+            href="/katalog"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '8px 18px',
+              borderRadius: '8px',
+              border: '1px solid #cbd5e1',
+              backgroundColor: '#ffffff',
+              color: '#334155',
+              fontWeight: 600,
+              fontSize: '0.88rem',
+              boxShadow: '0 1px 2px rgba(15, 23, 42, 0.05)',
+              textDecoration: 'none',
+              transition: 'all 0.15s'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = '#2563eb';
+              e.currentTarget.style.color = '#2563eb';
+              e.currentTarget.style.backgroundColor = '#eff6ff';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = '#cbd5e1';
+              e.currentTarget.style.color = '#334155';
+              e.currentTarget.style.backgroundColor = '#ffffff';
+            }}
+          >
+            <ArrowLeft size={16} /> Kembali
           </Link>
         </div>
 

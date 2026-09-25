@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
-import { Trash2, ArrowRight, ShoppingBag } from 'lucide-react';
+import { Trash2, ArrowRight, ShoppingBag, ArrowLeft } from 'lucide-react';
 
 export default function KeranjangPage() {
   const { cart, removeFromCart, updateQuantity, clearCart } = useCart();
@@ -78,14 +78,48 @@ export default function KeranjangPage() {
   return (
     <main style={{ padding: '40px 0', minHeight: '80vh' }}>
       <div className="container">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '28px', flexWrap: 'wrap', gap: '14px' }}>
           <div>
-            <h1 style={{ fontSize: '2rem' }}>Keranjang Belanja</h1>
-            <p style={{ color: '#64748b' }}>Pilih item yang ingin Anda bayar ({selectedItems.length} dari {cart.length} dipilih)</p>
+            <h1 style={{ fontSize: '2rem', fontWeight: 800, color: '#0f172a', letterSpacing: '-0.3px', margin: 0 }}>Keranjang Belanja</h1>
+            <p style={{ color: '#64748b', fontSize: '0.92rem', marginTop: '4px' }}>Pilih item yang ingin Anda bayar ({selectedItems.length} dari {cart.length} dipilih)</p>
           </div>
-          <button onClick={clearCart} className="btn btn-outline btn-sm">
-            Kosongkan Keranjang
-          </button>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <Link
+              href="/katalog"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '8px 18px',
+                borderRadius: '8px',
+                border: '1px solid #cbd5e1',
+                backgroundColor: '#ffffff',
+                color: '#334155',
+                fontWeight: 600,
+                fontSize: '0.88rem',
+                boxShadow: '0 1px 2px rgba(15, 23, 42, 0.05)',
+                textDecoration: 'none',
+                transition: 'all 0.15s'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = '#2563eb';
+                e.currentTarget.style.color = '#2563eb';
+                e.currentTarget.style.backgroundColor = '#eff6ff';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = '#cbd5e1';
+                e.currentTarget.style.color = '#334155';
+                e.currentTarget.style.backgroundColor = '#ffffff';
+              }}
+            >
+              <ArrowLeft size={16} /> Kembali
+            </Link>
+
+            <button onClick={clearCart} className="btn btn-outline" style={{ padding: '8px 14px', fontSize: '0.85rem' }}>
+              Kosongkan Keranjang
+            </button>
+          </div>
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: '32px' }}>

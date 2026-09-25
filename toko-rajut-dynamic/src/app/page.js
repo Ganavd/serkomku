@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabaseClient';
 import { ArrowRight, ShieldCheck, Sparkles, Truck } from 'lucide-react';
+import { parseProduct } from '@/lib/productHelper';
 
 export default function HomePage() {
   const [products, setProducts] = useState([]);
@@ -16,7 +17,7 @@ export default function HomePage() {
       try {
         const parsed = JSON.parse(cached);
         if (parsed && parsed.length > 0) {
-          setProducts(parsed);
+          setProducts(parsed.map(parseProduct).filter(p => p.is_active !== false));
           setLoading(false);
         }
       } catch (e) {}
@@ -30,11 +31,12 @@ export default function HomePage() {
       const { data, error } = await supabase
         .from('produk')
         .select('id, nama, harga, deskripsi, gambar_url, kategori(nama)')
-        .limit(4);
+        .limit(10);
 
       if (!error && data) {
-        setProducts(data);
-        sessionStorage.setItem('rajajutan_featured_cache', JSON.stringify(data));
+        const activeOnly = data.map(parseProduct).filter(p => p.is_active !== false).slice(0, 4);
+        setProducts(activeOnly);
+        sessionStorage.setItem('rajajutan_featured_cache', JSON.stringify(activeOnly));
       }
     } catch (err) {
       console.error('Error fetching featured products:', err);
@@ -76,7 +78,7 @@ export default function HomePage() {
                 color: '#0f172a',
                 letterSpacing: '-0.8px'
               }}>
-                Kehangatan &amp; Estetika Rajut Buatan Tangan
+                Temukan Keindahan &amp; Kehangatan dari Rajajutan Arkana
               </h1>
               <p style={{
                 color: '#475569',
@@ -85,15 +87,12 @@ export default function HomePage() {
                 marginBottom: '28px',
                 maxWidth: '540px'
               }}>
-                Temukan berbagai produk kerajinan rajut berkualitas dari <br />
-                <strong>Rajajutan Arkana</strong> mulai dari sweater wol, syal eksklusif, tas rajut modern, hingga boneka aksesoris lucu buatan tangan.
+                Berbagai produk kerajinan rajut berkualitas <br />
+                mulai dari sweater wol, syal eksklusif, tas rajut modern, hingga boneka aksesoris lucu buatan tangan.
               </p>
               <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
                 <Link href="/katalog" className="btn btn-primary" style={{ padding: '12px 26px', fontSize: '0.98rem' }}>
                   Lihat Katalog Produk <ArrowRight size={18} />
-                </Link>
-                <Link href="/admin/dashboard" className="btn btn-outline" style={{ padding: '12px 22px', fontSize: '0.98rem' }}>
-                  Dashboard Admin
                 </Link>
               </div>
             </div>
@@ -194,21 +193,6 @@ export default function HomePage() {
       <section style={{ padding: '80px 0', backgroundColor: '#f8fafc' }}>
         <div className="container">
           <div style={{ marginBottom: '32px' }}>
-            <span style={{
-              display: 'inline-block',
-              backgroundColor: '#eff6ff',
-              color: '#2563eb',
-              border: '1px solid #bfdbfe',
-              padding: '4px 12px',
-              borderRadius: '999px',
-              fontSize: '0.78rem',
-              fontWeight: 700,
-              textTransform: 'uppercase',
-              letterSpacing: '0.6px',
-              marginBottom: '8px'
-            }}>
-              Pilihan Terbaik
-            </span>
             <h2 style={{ fontSize: '2.2rem', fontWeight: 800, color: '#0f172a', letterSpacing: '-0.5px' }}>
               Produk Unggulan
             </h2>
