@@ -1,22 +1,64 @@
 // JavaScript untuk Interaktivitas Portofolio Statis
 
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. Mobile Navigation Toggle
-  const navToggle = document.getElementById('navToggle');
-  const mainNav = document.getElementById('mainNav');
+  // 1. Offcanvas Drawer Navigation & Hamburger Toggle
+  const menuToggle = document.getElementById('menuToggle');
+  const navDrawer = document.getElementById('navDrawer');
+  const drawerOverlay = document.getElementById('drawerOverlay');
+  const drawerClose = document.getElementById('drawerClose');
+  const drawerLinks = document.querySelectorAll('.drawer-link');
 
-  if (navToggle && mainNav) {
-    navToggle.addEventListener('click', () => {
-      mainNav.classList.toggle('active');
-    });
+  function openDrawer() {
+    if (navDrawer && drawerOverlay && menuToggle) {
+      navDrawer.classList.add('open');
+      drawerOverlay.classList.add('active');
+      menuToggle.classList.add('active');
+      menuToggle.setAttribute('aria-expanded', 'true');
+      navDrawer.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden'; // Mencegah scroll latar saat menu terbuka
+    }
+  }
 
-    // Close nav on click link
-    mainNav.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        mainNav.classList.remove('active');
-      });
+  function closeDrawer() {
+    if (navDrawer && drawerOverlay && menuToggle) {
+      navDrawer.classList.remove('open');
+      drawerOverlay.classList.remove('active');
+      menuToggle.classList.remove('active');
+      menuToggle.setAttribute('aria-expanded', 'false');
+      navDrawer.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+  }
+
+  if (menuToggle) {
+    menuToggle.addEventListener('click', () => {
+      if (navDrawer && navDrawer.classList.contains('open')) {
+        closeDrawer();
+      } else {
+        openDrawer();
+      }
     });
   }
+
+  if (drawerClose) {
+    drawerClose.addEventListener('click', closeDrawer);
+  }
+
+  if (drawerOverlay) {
+    drawerOverlay.addEventListener('click', closeDrawer);
+  }
+
+  // Tutup drawer ketika salah satu link navigasi diklik
+  drawerLinks.forEach(link => {
+    link.addEventListener('click', closeDrawer);
+  });
+
+  // Tutup drawer ketika menekan tombol Escape (aksesibilitas)
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && navDrawer && navDrawer.classList.contains('open')) {
+      closeDrawer();
+    }
+  });
 
   // 2. Contact Form Validation
   const contactForm = document.getElementById('contactForm');

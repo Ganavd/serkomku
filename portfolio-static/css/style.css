@@ -123,28 +123,28 @@ img {
 
 .container {
   width: 100%;
-  max-width: 1140px;
+  max-width: 1300px;
   margin-left: auto;
   margin-right: auto;
-  padding-left: var(--space-lg);
-  padding-right: var(--space-lg);
+  padding-left: clamp(20px, 4vw, 44px);
+  padding-right: clamp(20px, 4vw, 44px);
 }
 
 /* ==========================================================================
-   1. Header & Navbar (Frosted Glass)
+   1. Header & Navigasi (Hamburger Drawer & Tombol Kontak)
    ========================================================================== */
 .site-header {
   position: sticky;
   top: 0;
   z-index: 1000;
-  background-color: rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border-default);
-  height: 72px;
+  height: 74px;
   display: flex;
   align-items: center;
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
 }
 
 .header-inner {
@@ -160,7 +160,7 @@ img {
 }
 
 .brand-logo {
-  height: 40px;
+  height: 42px;
   width: auto;
   max-width: 220px;
   object-fit: contain;
@@ -173,58 +173,263 @@ img {
   transform: scale(1.02);
 }
 
-.main-nav {
+.header-right {
   display: flex;
   align-items: center;
-  gap: var(--space-lg);
+  gap: 14px;
 }
 
-.main-nav a {
-  color: var(--text-muted);
-  font-size: 0.92rem;
-  font-weight: 500;
-  padding: 6px 0;
-  position: relative;
-}
-
-.main-nav a:hover {
-  color: var(--color-primary);
-}
-
-.main-nav a.nav-cta {
+.nav-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background-color: var(--color-primary-soft);
   color: var(--color-primary);
   border: 1px solid var(--color-primary-border);
-  padding: 8px 18px;
+  padding: 9px 20px;
   border-radius: var(--radius-md);
+  font-size: 0.92rem;
   font-weight: 600;
+  transition: var(--transition);
   box-shadow: 0 1px 2px rgba(37, 99, 235, 0.05);
+  white-space: nowrap;
+  text-decoration: none;
 }
 
-.main-nav a.nav-cta:hover {
+.nav-cta:hover {
   background-color: var(--color-primary);
   color: #ffffff;
   border-color: var(--color-primary);
   transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
 }
 
-.mobile-nav-toggle {
-  display: none;
-  background: none;
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-sm);
-  padding: 8px;
+/* Tombol Hamburger Garis Tiga */
+.hamburger-btn {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background-color: #ffffff;
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
   cursor: pointer;
+  transition: var(--transition);
+  gap: 5px;
+  box-shadow: var(--shadow-sm);
 }
 
-.mobile-nav-toggle span {
+.hamburger-btn:hover {
+  background-color: var(--color-primary-soft);
+  border-color: var(--color-primary-border);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(37, 99, 235, 0.12);
+}
+
+.hamburger-btn .bar {
   display: block;
-  width: 20px;
-  height: 2px;
+  width: 22px;
+  height: 2.2px;
   background-color: var(--text-heading);
-  margin: 4px 0;
+  border-radius: 2px;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease, background-color 0.25s ease;
+  transform-origin: center;
+}
+
+.hamburger-btn:hover .bar {
+  background-color: var(--color-primary);
+}
+
+/* Animasi Hamburger ke 'X' */
+.hamburger-btn.active .bar-1 {
+  transform: translateY(7.2px) rotate(45deg);
+  background-color: var(--color-primary);
+}
+
+.hamburger-btn.active .bar-2 {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.hamburger-btn.active .bar-3 {
+  transform: translateY(-7.2px) rotate(-45deg);
+  background-color: var(--color-primary);
+}
+
+/* ==========================================================================
+   Overlay & Drawer Navigasi (Slide In Kanan ke Kiri, Tutup Geser ke Kanan)
+   ========================================================================== */
+.drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 1040;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.drawer-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.nav-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 350px;
+  max-width: calc(100vw - 32px);
+  background: #ffffff;
+  z-index: 1050;
+  box-shadow: -10px 0 35px rgba(15, 23, 42, 0.18);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%); /* Sembunyi di kanan */
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow-y: auto;
+  border-left: 1px solid var(--border-default);
+}
+
+.nav-drawer.open {
+  transform: translateX(0); /* Geser masuk ke kiri */
+}
+
+.drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--border-default);
+  background-color: var(--bg-slate-50);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.drawer-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.drawer-logo {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
+}
+
+.drawer-title {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-heading);
+}
+
+.drawer-close-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-default);
+  background: #ffffff;
+  border-radius: var(--radius-sm);
+  font-size: 1.4rem;
+  color: var(--text-muted);
+  cursor: pointer;
   transition: var(--transition);
+  line-height: 1;
+}
+
+.drawer-close-btn:hover {
+  background-color: #fee2e2;
+  color: var(--color-danger);
+  border-color: #fca5a5;
+}
+
+.drawer-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 14px 12px;
+  gap: 3px;
+  flex: 1;
+}
+
+.drawer-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 14px;
+  border-radius: var(--radius-sm);
+  color: var(--text-body);
+  font-size: 0.92rem;
+  font-weight: 600;
+  transition: var(--transition);
+  text-decoration: none;
+}
+
+.drawer-num {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  background-color: var(--color-primary-soft);
+  padding: 2px 7px;
+  border-radius: var(--radius-xs);
+  letter-spacing: 0.5px;
+  transition: var(--transition);
+}
+
+.drawer-text {
+  flex: 1;
+}
+
+.drawer-link:hover {
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary);
+  transform: translateX(4px);
+}
+
+.drawer-link:hover .drawer-num {
+  background-color: var(--color-primary);
+  color: #ffffff;
+}
+
+.drawer-link-cta {
+  margin-top: 8px;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+.drawer-link-cta .drawer-num {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+.drawer-link-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+  background: linear-gradient(135deg, var(--color-primary-dark) 0%, #1e40af 100%);
+}
+
+.drawer-footer {
+  padding: 14px 20px;
+  border-top: 1px solid var(--border-default);
+  background-color: var(--bg-slate-50);
+  text-align: center;
+}
+
+.drawer-footer-text {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin: 0;
 }
 
 /* ==========================================================================
@@ -441,7 +646,7 @@ img {
   color: var(--text-muted);
   line-height: 1.7;
   margin-bottom: var(--space-sm);
-  max-width: 540px;
+  max-width: 620px;
 }
 
 .hero-tagline {
@@ -1378,38 +1583,16 @@ img {
     padding-bottom: 0;
     margin-bottom: 0;
   }
-}
-
-@media (max-width: 768px) {
   .site-header {
-    height: 64px;
+    height: 66px;
   }
 
   .brand-logo {
-    height: 34px;
+    height: 36px;
   }
+}
 
-  .main-nav {
-    display: none;
-    position: absolute;
-    top: 64px;
-    left: 0;
-    right: 0;
-    background-color: #ffffff;
-    flex-direction: column;
-    padding: var(--space-lg);
-    border-bottom: 1px solid var(--border-default);
-    box-shadow: var(--shadow-hover);
-    gap: var(--space-md);
-  }
-
-  .main-nav.active {
-    display: flex;
-  }
-
-  .mobile-nav-toggle {
-    display: block;
-  }
+@media (max-width: 768px) {
 
   .hero-title {
     font-size: 2.5rem;

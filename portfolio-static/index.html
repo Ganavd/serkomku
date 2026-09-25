@@ -17,7 +17,7 @@
 <body>
 
   <!-- =========================================================================
-       1. HEADER & NAVIGASI
+       1. HEADER & NAVIGASI (Dengan Menu Hamburger & Tombol Kontak)
        ========================================================================= -->
   <header class="site-header" id="top">
     <div class="container header-inner">
@@ -25,26 +25,83 @@
         <img src="assets/Logo-Portofolio.png" alt="Logo Portofolio" class="brand-logo" />
       </a>
       
-      <nav class="main-nav" id="mainNav">
-        <a href="#beranda">Beranda</a>
-        <a href="#tentang">Tentang</a>
-        <a href="#pendidikan">Pendidikan</a>
-        <a href="#pengalaman">Pengalaman</a>
-        <a href="#keahlian">Keahlian</a>
-        <a href="#portofolio">Portofolio</a>
-        <a href="#sertifikat">Sertifikat</a>
-        <a href="#artikel">Artikel</a>
-        <a href="#kegiatan"Kegiatan</a></a>
-        <a href="#kontak" class="nav-cta">Hubungi Saya</a>
-      </nav>
-
-      <button class="mobile-nav-toggle" id="navToggle" aria-label="Buka Menu Navigasi">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+      <div class="header-right">
+        <a href="#kontak" class="nav-cta">Kontak Saya</a>
+        
+        <!-- Tombol Hamburger Garis Tiga -->
+        <button class="hamburger-btn" id="menuToggle" aria-label="Buka Menu Navigasi" aria-expanded="false" aria-controls="navDrawer">
+          <span class="bar bar-1"></span>
+          <span class="bar bar-2"></span>
+          <span class="bar bar-3"></span>
+        </button>
+      </div>
     </div>
   </header>
+
+  <!-- Overlay Backdrop Menu Navigasi -->
+  <div class="drawer-overlay" id="drawerOverlay" aria-hidden="true"></div>
+
+  <!-- Sidebar Drawer Navigasi (Slide-In dari Kanan ke Kiri) -->
+  <aside class="nav-drawer" id="navDrawer" aria-label="Menu Navigasi Utama" aria-hidden="true">
+    <div class="drawer-header">
+      <div class="drawer-brand">
+        <img src="assets/Logo-Portofolio.png" alt="Logo Portofolio" class="drawer-logo" />
+        <span class="drawer-title">Navigasi Halaman</span>
+      </div>
+      <button class="drawer-close-btn" id="drawerClose" aria-label="Tutup Menu">&times;</button>
+    </div>
+
+    <nav class="drawer-nav" id="drawerNav">
+      <a href="#beranda" class="drawer-link">
+        <span class="drawer-num">01</span>
+        <span class="drawer-text">Beranda</span>
+      </a>
+      <a href="#tentang" class="drawer-link">
+        <span class="drawer-num">02</span>
+        <span class="drawer-text">Tentang</span>
+      </a>
+      <a href="#profesional" class="drawer-link">
+        <span class="drawer-num">03</span>
+        <span class="drawer-text">Profil Profesional</span>
+      </a>
+      <a href="#pendidikan" class="drawer-link">
+        <span class="drawer-num">04</span>
+        <span class="drawer-text">Pendidikan</span>
+      </a>
+      <a href="#pengalaman" class="drawer-link">
+        <span class="drawer-num">05</span>
+        <span class="drawer-text">Pengalaman</span>
+      </a>
+      <a href="#keahlian" class="drawer-link">
+        <span class="drawer-num">06</span>
+        <span class="drawer-text">Keahlian</span>
+      </a>
+      <a href="#portofolio" class="drawer-link">
+        <span class="drawer-num">07</span>
+        <span class="drawer-text">Portofolio</span>
+      </a>
+      <a href="#sertifikat" class="drawer-link">
+        <span class="drawer-num">08</span>
+        <span class="drawer-text">Sertifikat</span>
+      </a>
+      <a href="#kegiatan" class="drawer-link">
+        <span class="drawer-num">09</span>
+        <span class="drawer-text">Kegiatan</span>
+      </a>
+      <a href="#artikel" class="drawer-link">
+        <span class="drawer-num">10</span>
+        <span class="drawer-text">Artikel</span>
+      </a>
+      <a href="#kontak" class="drawer-link drawer-link-cta">
+        <span class="drawer-num">11</span>
+        <span class="drawer-text">Kontak Saya &rarr;</span>
+      </a>
+    </nav>
+
+    <div class="drawer-footer">
+      <p class="drawer-footer-text">&bull; Portofolio SMKN 1 Jenangan &bull;</p>
+    </div>
+  </aside>
 
   <main>
     <!-- =========================================================================
@@ -752,16 +809,20 @@
         <a href="#top" class="footer-brand" aria-label="Kembali ke atas">
           <img src="assets/Logo-Portofolio.png" alt="Logo Portofolio" class="footer-logo" />
         </a>
-        <p class="footer-desc">Portofolio Uji Kompetensi Keahlian Rekayasa Perangkat Lunak &bull; SMKN 1 Jenangan Ponorogo.</p>
+        <p class="footer-desc">&bull; Portofolio Uji Kompetensi Keahlian Rekayasa Perangkat Lunak <br> &bull; SMKN 1 Jenangan Ponorogo.</p>
       </div>
 
       <nav class="footer-nav">
         <a href="#beranda">Beranda</a>
         <a href="#tentang">Tentang</a>
+        <a href="#profesional">Profil Profesional</a>
         <a href="#pendidikan">Pendidikan</a>
         <a href="#pengalaman">Pengalaman</a>
         <a href="#keahlian">Keahlian</a>
         <a href="#portofolio">Portofolio</a>
+        <a href="#sertifikat">Sertifikat</a>
+        <a href="#kegiatan">Kegiatan</a>
+        <a href="#artikel">Artikel</a>
         <a href="#kontak">Kontak</a>
       </nav>
 
