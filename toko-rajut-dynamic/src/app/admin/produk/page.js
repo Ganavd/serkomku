@@ -38,6 +38,7 @@ export default function AdminProdukPage() {
 
   const [uploading, setUploading] = useState(false);
   const [statusMsg, setStatusMsg] = useState('');
+  const [formErrors, setFormErrors] = useState({});
 
   // Modal Delete & Warning states
   const [deleteTarget, setDeleteTarget] = useState(null);
@@ -107,6 +108,7 @@ export default function AdminProdukPage() {
         gambar_url: ''
       });
     }
+    setFormErrors({});
     setIsModalOpen(true);
   };
 
@@ -142,19 +144,46 @@ export default function AdminProdukPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.nama || !formData.harga) {
-      alert('Nama dan Harga wajib diisi!');
+
+    const errs = {};
+    if (!formData.nama || !formData.nama.trim()) {
+      errs.nama = 'Nama produk wajib diisi.';
+    }
+
+    const hargaStr = String(formData.harga ?? '').trim();
+    const hargaVal = Number(formData.harga);
+    if (!hargaStr) {
+      errs.harga = 'Please enter a number (Harga wajib diisi).';
+    } else if (isNaN(hargaVal)) {
+      errs.harga = 'Please enter a number (Harga harus berupa angka).';
+    } else if (hargaVal <= 0) {
+      errs.harga = 'Value must be greater than 0 (Harga harus lebih besar dari 0 dan tidak boleh minus).';
+    }
+
+    const stokStr = String(formData.stok ?? '').trim();
+    const stokVal = Number(formData.stok);
+    if (stokStr === '') {
+      errs.stok = 'Please enter a number (Jumlah stok wajib diisi).';
+    } else if (isNaN(stokVal)) {
+      errs.stok = 'Please enter a number (Jumlah stok harus berupa angka).';
+    } else if (stokVal < 0) {
+      errs.stok = 'Value must be greater than or equal to 0 (Jumlah stok tidak boleh bernilai minus).';
+    }
+
+    if (Object.keys(errs).length > 0) {
+      setFormErrors(errs);
       return;
     }
+    setFormErrors({});
 
     const currentStatus = editingProduct ? (editingProduct.is_active !== false) : true;
     const formattedDesc = formatProductDescription(formData.deskripsi, currentStatus);
 
     const payload = {
-      nama: formData.nama,
+      nama: formData.nama.trim(),
       kategori_id: parseInt(formData.kategori_id || categories[0]?.id),
-      harga: parseInt(formData.harga),
-      stok: parseInt(formData.stok || 0),
+      harga: Math.round(hargaVal),
+      stok: Math.round(stokVal),
       deskripsi: formattedDesc,
       gambar_url: formData.gambar_url,
       is_active: currentStatus
@@ -991,10 +1020,19 @@ export default function AdminProdukPage() {
                 <input
                   type="text"
                   className="form-input"
+                  style={{ borderColor: formErrors.nama ? '#ef4444' : undefined }}
                   value={formData.nama}
-                  onChange={(e) => setFormData({ ...formData, nama: e.target.value })}
+                  onChange={(e) => {
+                    setFormData({ ...formData, nama: e.target.value });
+                    if (formErrors.nama) setFormErrors(prev => ({ ...prev, nama: '' }));
+                  }}
                   required
                 />
+                {formErrors.nama && (
+                  <p style={{ color: '#ef4444', fontSize: '0.78rem', marginTop: '4px', fontWeight: 500 }}>
+                    {formErrors.nama}
+                  </p>
+                )}
               </div>
 
               <div className="form-group">
@@ -1015,21 +1053,51 @@ export default function AdminProdukPage() {
                   <label style={{ fontWeight: 600, fontSize: '0.88rem', marginBottom: '6px', display: 'block' }}>Harga (Rp) *</label>
                   <input
                     type="number"
+                    min="1"
                     className="form-input"
+                    style={{ borderColor: formErrors.harga ? '#ef4444' : undefined }}
                     value={formData.harga}
-                    onChange={(e) => setFormData({ ...formData, harga: e.target.value })}
+                    onKeyDown={(e) => {
+                      if (['-', '+', 'e', 'E'].includes(e.key)) {
+                        e.preventDefault();
+                      }
+                    }}
+                    onChange={(e) => {
+                      setFormData({ ...formData, harga: e.target.value });
+                      if (formErrors.harga) setFormErrors(prev => ({ ...prev, harga: '' }));
+                    }}
                     required
                   />
+                  {formErrors.harga && (
+                    <p style={{ color: '#ef4444', fontSize: '0.78rem', marginTop: '4px', fontWeight: 500 }}>
+                      {formErrors.harga}
+                    </p>
+                  )}
                 </div>
                 <div className="form-group">
                   <label style={{ fontWeight: 600, fontSize: '0.88rem', marginBottom: '6px', display: 'block' }}>Jumlah Stok *</label>
                   <input
                     type="number"
+                    min="0"
                     className="form-input"
+                    style={{ borderColor: formErrors.stok ? '#ef4444' : undefined }}
                     value={formData.stok}
-                    onChange={(e) => setFormData({ ...formData, stok: e.target.value })}
+                    onKeyDown={(e) => {
+                      if (['-', '+', 'e', 'E'].includes(e.key)) {
+                        e.preventDefault();
+                      }
+                    }}
+                    onChange={(e) => {
+                      setFormData({ ...formData, stok: e.target.value });
+                      if (formErrors.stok) setFormErrors(prev => ({ ...prev, stok: '' }));
+                    }}
                     required
                   />
+                  {formErrors.stok && (
+                    <p style={{ color: '#ef4444', fontSize: '0.78rem', marginTop: '4px', fontWeight: 500 }}>
+                      {formErrors.stok}
+                    </p>
+                  )}
                 </div>
               </div>
 
